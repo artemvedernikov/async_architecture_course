@@ -1,4 +1,4 @@
-package ru.avedernikov.asyncarchitecture.config;
+package ru.avedernikov.asyncarchitecture.auth.config;
 
 import org.springframework.context.annotation.Configuration;
 

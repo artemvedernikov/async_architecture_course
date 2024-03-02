@@ -1,4 +1,4 @@
-package ru.avedernikov.asyncarchitecture.config;
+package ru.avedernikov.asyncarchitecture.tasktracker.config;
 
 import org.springframework.context.annotation.Configuration;
 
