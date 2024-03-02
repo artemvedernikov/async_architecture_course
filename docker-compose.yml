@@ -1,0 +1,16 @@
+version: '3'
+services:
+  auth:
+    platform: linux/x86_64 # mac m2 workaround
+    build: ./auth
+    image: auth:latest
+    restart: always
+    ports:
+      - "8080:8080"
+  task-tracker:
+    platform: linux/x86_64 # mac m2 workaround
+    build: ./task-tracker
+    image: task-tracker:latest
+    restart: always
+    ports:
+      - "8090:8090"
