@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.Account;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.AccountRole;
-import ru.avedernikov.asyncarchitecture.tasktracker.model.Task;
 
 import java.util.List;
 import java.util.UUID;
