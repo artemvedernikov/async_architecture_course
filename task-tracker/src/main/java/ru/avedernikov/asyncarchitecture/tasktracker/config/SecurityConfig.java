@@ -57,8 +57,8 @@ class SecurityConfig {
     @Bean
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher("/customers*"))
-                .hasRole("user")
+                .requestMatchers(new AntPathRequestMatcher("/v1/tasks/*"))
+                .hasAnyRole("worker", "manager", "admin", "lead") // all available roles
                 .requestMatchers(new AntPathRequestMatcher("/"))
                 .permitAll()
                 .anyRequest()

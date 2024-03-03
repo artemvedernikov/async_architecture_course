@@ -37,6 +37,10 @@ public class Task {
         return done;
     }
 
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public void setAssignee(Account account) {
         assignee = account;
     }

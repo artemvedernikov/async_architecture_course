@@ -5,6 +5,6 @@ import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEvent;
 
 public class AccountEventConverter {
     public static AccountEvent accountToAccountEvent(AccountEvent.AccountEventType eventType, Account account) {
-
+        return null;
     }
 }

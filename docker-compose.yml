@@ -9,6 +9,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+      network_mode: host
 
   broker:
     image: confluentinc/cp-server:5.4.1
@@ -32,6 +33,7 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+    network_mode: host
 
   db:
     image: postgres:14.1-alpine
@@ -65,26 +67,28 @@ services:
       - db
       - broker
     restart: always
+    network_mode: host
 
-#  task-tracker:
-#    platform: linux/x86_64 # mac m2 workaround
-#    build: ./task-tracker
-#    image: task-tracker:latest
-#    restart: always
-#    depends_on:
-#      - db
-#      - broker
-#    environment:
-#    # https://www.baeldung.com/spring-boot-keycloak#keycloak-config
-#      - spring.security.oauth2.client.registration.keycloak.client-id=login-app
-#      - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
-#      - spring.security.oauth2.client.registration.keycloak.scope=openid
-#      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
-#      - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
-#      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
-#    ports:
-#      - "8090:8090"
-#    network_mode: host
+  task-tracker:
+    platform: linux/x86_64 # mac m2 workaround
+    build: ./task-tracker
+    image: task-tracker:latest
+    restart: always
+    depends_on:
+      - db
+      - broker
+    environment:
+    # https://www.baeldung.com/spring-boot-keycloak#keycloak-config
+      - spring.security.oauth2.client.registration.keycloak.client-id=task-tracker
+      - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+      - spring.security.oauth2.client.registration.keycloak.scope=openid
+      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+      - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+    ports:
+      - "8090:8090"
+    network_mode: host
+
 volumes:
   db:
     driver: local

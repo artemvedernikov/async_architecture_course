@@ -14,6 +14,10 @@ public class AccountEvent {
 
     private final UUID accountId;
 
+    private final String email;
+
+    private final String role;
+
     public AccountEventType getEventType() {
         return eventType;
     }
@@ -22,8 +26,18 @@ public class AccountEvent {
         return accountId;
     }
 
-    public AccountEvent(AccountEventType eventType, UUID accountId) {
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public AccountEvent(AccountEventType eventType, UUID accountId, String email, String role) {
         this.eventType = eventType;
         this.accountId = accountId;
+        this.email = email;
+        this.role = role;
     }
 }
