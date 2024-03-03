@@ -1,5 +1,6 @@
 target/
 postgres-data/
+volumes/
 
 # Compiled class file
 *.class
