@@ -16,7 +16,7 @@ public class AccountEventConsumer {
     private AccountRepository accountRepository;
 
     @KafkaListener(
-            topics = "accounts-event",
+            topics = "account-event",
             containerFactory = "kafkaListenerContainerFactory")
     public void greetingListener(AccountEvent accountEvent) {
         System.out.println("Got event");

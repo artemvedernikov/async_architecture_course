@@ -1,4 +1,4 @@
-CREATE TYPE AS ENUM account_role('worker', 'manager', 'admin', 'lead')
+CREATE TYPE account_role AS ENUM ('worker', 'manager', 'admin', 'lead');
 
 CREATE TABLE IF NOT EXISTS accounts(
     id UUID NOT NULL,
