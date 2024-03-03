@@ -72,7 +72,7 @@ services:
       - db
       - broker
     restart: always
-    network_mode: host
+    #network_mode: host # doesn't work correct with enabled
 
   task-tracker:
     platform: linux/x86_64 # mac m2 workaround

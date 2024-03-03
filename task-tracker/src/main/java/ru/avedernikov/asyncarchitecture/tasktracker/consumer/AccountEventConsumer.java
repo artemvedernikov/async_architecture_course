@@ -20,10 +20,16 @@ public class AccountEventConsumer {
             containerFactory = "kafkaListenerContainerFactory")
     public void greetingListener(AccountEvent accountEvent) {
         System.out.println("Got event");
-        UUID id = accountEvent.getAccountId();
-        String email = accountEvent.getEmail();
-        String roleStr = accountEvent.getRole();
-        AccountRole role = AccountRole.valueOf(roleStr);
-        accountRepository.upsert(id, email, role);
+        if (accountEvent.getType().equals("CLIENT_REGISTER") || accountEvent.getType().equals("CLIENT_UPDATE")) {
+            UUID id = UUID.fromString(accountEvent.getUserId());
+            String email = accountEvent.getDetails().get("email");
+            // todo
+            String roleStr = accountEvent.getDetails().get("role");
+            AccountRole role = AccountRole.valueOf(roleStr);
+            accountRepository.upsert(id, email, role);
+        } else if (accountEvent.getType().equals("DELETE_ACCOUNT")) {
+            UUID id = UUID.fromString(accountEvent.getUserId());
+            accountRepository.deleteById(id);
+        }
     }
 }
