@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEvent;
-import ru.avedernikov.asyncarchitecture.tasktracker.config.TaskEventProducerConfig;
 import ru.avedernikov.asyncarchitecture.tasktracker.dto.TaskDTO;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.Account;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.AccountRole;
@@ -39,7 +38,7 @@ public class TaskController {
 
     @PostMapping("/")
     ResponseEntity<Task> createTask(@RequestBody TaskDTO taskDTO) {
-        List<Account> workers = accountRepository.findByAccountRole(AccountRole.WORKER);
+        List<Account> workers = accountRepository.findByRole(AccountRole.worker);
         Optional<Account> worker = getRandomWorker(workers);
         if (worker.isPresent()) {
             Task task = new Task(
@@ -90,7 +89,7 @@ public class TaskController {
     @PostMapping("actions/reassign_tasks")
     ResponseEntity<?> reassignTasks(Principal principal) {
         List<Task> notDoneTasks = taskRepository.findNotDoneTasks();
-        List<Account> workers = accountRepository.findByAccountRole(AccountRole.WORKER);
+        List<Account> workers = accountRepository.findByRole(AccountRole.worker);
 
         List<Task> updatedTasks = notDoneTasks.stream().map(t -> {
             int index = randomGenerator.nextInt(workers.size());

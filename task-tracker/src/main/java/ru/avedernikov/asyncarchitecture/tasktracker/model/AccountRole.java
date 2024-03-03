@@ -1,8 +1,9 @@
 package ru.avedernikov.asyncarchitecture.tasktracker.model;
 
+// todo: lowercase enums do not match conventions but it is faster
 public enum AccountRole {
-    WORKER,
-    MANAGER,
-    ADMIN,
-    LEAD
+    worker,
+    manager,
+    admin,
+    lead
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
-    public List<Account> findByAccountRole(AccountRole accountRole);
+    public List<Account> findByRole(AccountRole accountRole);
 
     @Query(value = "insert into accounts(id, email, role) values (:id, :email, :role) on conflict(id) do update set accounts.email = :email, accounts.role = :role", nativeQuery = true)
     public void upsert(UUID id, String email, AccountRole role);

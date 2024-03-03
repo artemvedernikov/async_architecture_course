@@ -14,6 +14,7 @@ public class Account {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private AccountRole role;
 
     private boolean active;
