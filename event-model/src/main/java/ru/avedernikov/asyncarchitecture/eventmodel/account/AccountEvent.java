@@ -10,15 +10,20 @@ public class AccountEvent {
         ACCOUNT_DELETED
     }
 
+    private final AccountEventType eventType;
+
     private final UUID accountId;
 
-    private final AccountEventType eventType;
+    public AccountEventType getEventType() {
+        return eventType;
+    }
 
     public UUID getAccountId() {
         return accountId;
     }
 
-    public AccountEventType getEventType() {
-        return eventType;
+    public AccountEvent(AccountEventType eventType, UUID accountId) {
+        this.eventType = eventType;
+        this.accountId = accountId;
     }
 }

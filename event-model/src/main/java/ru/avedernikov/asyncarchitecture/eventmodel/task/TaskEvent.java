@@ -9,16 +9,20 @@ public class TaskEvent {
         TASK_UPDATED
     }
 
-    private final UUID taskId;
-
     private final TaskEventType eventType;
 
+    private final UUID taskId;
 
-    public UUID getTaskId() {
-        return taskId;
+    public TaskEvent(TaskEventType eventType, UUID taskId) {
+        this.eventType = eventType;
+        this.taskId = taskId;
     }
 
     public TaskEventType getEventType() {
         return eventType;
+    }
+
+    public UUID getTaskId() {
+        return taskId;
     }
 }

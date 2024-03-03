@@ -26,7 +26,7 @@ public class AuthController {
     signIn() {
         // todo
         Account account = null;
-        AccountEvent event = AccountEventConverter.accountToAccountEvent(account);
+        AccountEvent event = AccountEventConverter.accountToAccountEvent(AccountEvent.AccountEventType.ACCOUNT_CREATED, account);
         accountEventTemplate.send(, event);
     }
 

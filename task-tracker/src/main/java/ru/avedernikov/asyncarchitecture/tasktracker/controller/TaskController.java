@@ -24,14 +24,16 @@ public class TaskController {
     @PostMapping
     Task createTask() {
         Task task = null;
-        TaskEvent event = TaskEventConverter.taskToTaskEvent(task);
+        TaskEvent event = TaskEventConverter.taskToTaskEvent(TaskEvent.TaskEventType.TASK_CREATED, task);
         taskEventTemplate.send()
     }
 
 
     @PutMapping()
     Task updateTask() {
-
+        Task task = null;
+        TaskEvent event = TaskEventConverter.taskToTaskEvent(TaskEvent.TaskEventType.TASK_UPDATED, task);
+        taskEventTemplate.send()
     }
 
     // todo: should we do it based on role?
