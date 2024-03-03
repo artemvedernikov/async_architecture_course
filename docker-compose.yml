@@ -46,16 +46,19 @@ services:
     network_mode: host
 
   auth:
-    platform: linux/x86_64 # mac m2 workaround
-    build: ./auth
-    image: auth:latest
-    restart: always
-    depends_on:
-      - db
-      - broker
+    image: quay.io/keycloak/keycloak
     ports:
       - "8080:8080"
-    network_mode: host
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - /home/keycloak/realm.json:/opt/keycloak/data/import/realm.json
+    depends_on:
+      - broker
 
   task-tracker:
     platform: linux/x86_64 # mac m2 workaround

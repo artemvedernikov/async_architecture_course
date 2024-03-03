@@ -14,13 +14,19 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    private TaskState taskState;
+    private String name;
+
+    private boolean done;
 
     public UUID getId() {
         return id;
     }
 
-    public TaskState getTaskState() {
-        return taskState;
+    public String getName() {
+        return name;
+    }
+
+    public boolean getDone() {
+        return done;
     }
 }
