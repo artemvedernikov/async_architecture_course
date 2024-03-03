@@ -1,9 +1,6 @@
 package ru.avedernikov.asyncarchitecture.tasktracker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -18,6 +15,16 @@ public class Task {
 
     private boolean done;
 
+    @ManyToOne
+    @JoinColumn(name="assignee_id")
+    private Account assignee;
+
+    public Task(String name, boolean done, Account assignee) {
+        this.name = name;
+        this.done = done;
+        this.assignee = assignee;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -28,5 +35,9 @@ public class Task {
 
     public boolean getDone() {
         return done;
+    }
+
+    public void setAssignee(Account account) {
+        assignee = account;
     }
 }

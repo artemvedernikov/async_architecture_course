@@ -35,7 +35,7 @@ public class AccountEventConsumerConfig {
                 bootstrapAddress);
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
-                groupId);
+                "task-tracker");
         props.put(
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 UUIDDeserializer.class);

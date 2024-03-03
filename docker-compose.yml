@@ -46,31 +46,45 @@ services:
     network_mode: host
 
   auth:
-    image: quay.io/keycloak/keycloak
+    build: ./keycloak
+    image: keycloak-kafka:latest
     ports:
       - "8080:8080"
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KAFKA_TOPIC: account-events
+      KAFKA_CLIENT_ID: keycloak
+      KAFKA_BOOTSTRAP_SERVERS: localhost:5432
     command:
       - start-dev
       - --import-realm
     volumes:
-      - /home/keycloak/realm.json:/opt/keycloak/data/import/realm.json
-    depends_on:
-      - broker
-
-  task-tracker:
-    platform: linux/x86_64 # mac m2 workaround
-    build: ./task-tracker
-    image: task-tracker:latest
-    restart: always
+      - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json
     depends_on:
       - db
       - broker
-    ports:
-      - "8090:8090"
-    network_mode: host
+    restart: always
+
+#  task-tracker:
+#    platform: linux/x86_64 # mac m2 workaround
+#    build: ./task-tracker
+#    image: task-tracker:latest
+#    restart: always
+#    depends_on:
+#      - db
+#      - broker
+#    environment:
+#    # https://www.baeldung.com/spring-boot-keycloak#keycloak-config
+#      - spring.security.oauth2.client.registration.keycloak.client-id=login-app
+#      - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+#      - spring.security.oauth2.client.registration.keycloak.scope=openid
+#      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+#      - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+#      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+#    ports:
+#      - "8090:8090"
+#    network_mode: host
 volumes:
   db:
     driver: local
