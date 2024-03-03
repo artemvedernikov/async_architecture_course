@@ -10,6 +10,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
       ALLOW_ANONYMOUS_LOGIN: yes
+      ZOO_ADMIN_SERVER_PORT_NUMBER: 9999
     network_mode: host
 
   broker:
@@ -84,9 +85,9 @@ services:
       - spring.security.oauth2.client.registration.keycloak.client-id=task-tracker
       - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
       - spring.security.oauth2.client.registration.keycloak.scope=openid
-      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://localhost:8080/realms/async_architecture
       - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
-      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/SpringBootKeycloak
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/async_architecture
     ports:
       - "8090:8090"
     network_mode: host
