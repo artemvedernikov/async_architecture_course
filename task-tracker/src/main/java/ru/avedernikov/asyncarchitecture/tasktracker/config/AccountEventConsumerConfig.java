@@ -10,7 +10,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import ru.avedernikov.asyncarchitecture.eventmodel.UserEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,17 +18,17 @@ import java.util.UUID;
 
 @EnableKafka
 @Configuration
-public class UserEventConsumerConfig {
+public class AccountEventConsumerConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-    @Value(value = "${spring.kafka.user-events-topic-name}")
-    private String userEventsTopicName;
+    @Value(value = "${spring.kafka.account-events-topic-name}")
+    private String accountEventsTopicName;
 
 
     @Bean
-    public ConsumerFactory<UUID, UserEvent> consumerFactory() {
+    public ConsumerFactory<UUID, AccountEvent> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -46,10 +46,10 @@ public class UserEventConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<UUID, UserEvent>
+    public ConcurrentKafkaListenerContainerFactory<UUID, AccountEvent>
     kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<UUID, UserEvent> factory =
+        ConcurrentKafkaListenerContainerFactory<UUID, AccountEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

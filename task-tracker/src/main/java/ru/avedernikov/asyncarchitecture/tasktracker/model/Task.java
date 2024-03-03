@@ -10,4 +10,6 @@ public class Task {
 
     @Id
     private UUID id;
+
+    private TaskState taskState;
 }

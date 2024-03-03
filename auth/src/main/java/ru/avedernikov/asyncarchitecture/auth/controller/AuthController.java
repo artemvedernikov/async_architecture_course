@@ -5,10 +5,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.avedernikov.asyncarchitecture.auth.UserRepository;
-import ru.avedernikov.asyncarchitecture.auth.model.User;
-import ru.avedernikov.asyncarchitecture.auth.utils.UserEventConverter;
-import ru.avedernikov.asyncarchitecture.eventmodel.UserEvent;
+import ru.avedernikov.asyncarchitecture.auth.AccountRepository;
+import ru.avedernikov.asyncarchitecture.auth.model.Account;
+import ru.avedernikov.asyncarchitecture.auth.utils.AccountEventConverter;
+import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEvent;
 
 import java.util.UUID;
 
@@ -17,17 +17,17 @@ import java.util.UUID;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    private KafkaTemplate<UUID, UserEvent> userEventTemplate;
+    private KafkaTemplate<UUID, AccountEvent> accountEventTemplate;
 
     @PostMapping("/sign_in")
     signIn() {
         // todo
-        User user = null;
-        UserEvent event = UserEventConverter.userToUserEvent(user);
-        userEventTemplate.send(, event);
+        Account account = null;
+        AccountEvent event = AccountEventConverter.accountToAccountEvent(account);
+        accountEventTemplate.send(, event);
     }
 
 }

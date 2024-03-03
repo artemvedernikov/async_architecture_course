@@ -12,7 +12,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.avedernikov.asyncarchitecture.eventmodel.TaskEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class TaskEventProducerConfig {
     }
 
     @Bean
-    public NewTopic userEventTopic() {
+    public NewTopic accountEventTopic() {
         return new NewTopic(taskEventsTopicName, 1, (short) 1);
     }
 

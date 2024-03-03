@@ -12,20 +12,20 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.avedernikov.asyncarchitecture.eventmodel.UserEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Configuration
-public class UserEventProducerConfig {
+public class AccountEventProducerConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-    @Value(value = "${spring.kafka.user-events-topic-name}")
-    private String userEventsTopicName;
+    @Value(value = "${spring.kafka.account-events-topic-name}")
+    private String accountEventsTopicName;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -35,13 +35,13 @@ public class UserEventProducerConfig {
     }
 
     @Bean
-    public NewTopic userEventTopic() {
-        return new NewTopic(userEventsTopicName, 1, (short) 1);
+    public NewTopic accountEventTopic() {
+        return new NewTopic(accountEventsTopicName, 1, (short) 1);
     }
 
 
     @Bean
-    public ProducerFactory<UUID, UserEvent> producerFactory() {
+    public ProducerFactory<UUID, AccountEvent> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -56,7 +56,7 @@ public class UserEventProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<UUID, UserEvent> kafkaTemplate() {
+    public KafkaTemplate<UUID, AccountEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
