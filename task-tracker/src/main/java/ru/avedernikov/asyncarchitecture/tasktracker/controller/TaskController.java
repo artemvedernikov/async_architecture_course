@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
-import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEventV1;
 import ru.avedernikov.asyncarchitecture.tasktracker.dto.TaskDTO;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.Account;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.AccountRole;
@@ -32,7 +32,7 @@ public class TaskController {
     private AccountRepository accountRepository;
 
     @Autowired
-    private KafkaTemplate<UUID, TaskEvent> taskEventTemplate;
+    private KafkaTemplate<UUID, TaskEventV1> taskEventTemplate;
 
     private final Random randomGenerator = new Random();
 
@@ -47,7 +47,7 @@ public class TaskController {
                 worker.get()
             );
             taskRepository.save(task);
-            TaskEvent event = TaskEventConverter.taskToTaskEvent(TaskEvent.TaskEventType.TASK_CREATED, task);
+            TaskEventV1 event = TaskEventConverter.taskToTaskEvent(TaskEventV1.TaskEventType.TASK_CREATED, task);
             taskEventTemplate.send("task-events", event);
             return new ResponseEntity<>(task, HttpStatus.OK);
         } else {
@@ -61,7 +61,7 @@ public class TaskController {
         Optional<Task> taskData = taskRepository.findById(id);
         if (taskData.isPresent()) {
             Task task = null;
-            TaskEvent event = TaskEventConverter.taskToTaskEvent(TaskEvent.TaskEventType.TASK_UPDATED, task);
+            TaskEventV1 event = TaskEventConverter.taskToTaskEvent(TaskEventV1.TaskEventType.TASK_UPDATED, task);
             taskEventTemplate.send("task-events", event);
             return new ResponseEntity<>(task, HttpStatus.OK);
         } else {
@@ -100,7 +100,7 @@ public class TaskController {
 
         taskRepository.saveAllAndFlush(updatedTasks);
         updatedTasks.forEach(t -> {
-            TaskEvent event = TaskEventConverter.taskToTaskEvent(TaskEvent.TaskEventType.TASK_UPDATED, t);
+            TaskEventV1 event = TaskEventConverter.taskToTaskEvent(TaskEventV1.TaskEventType.TASK_UPDATED, t);
             taskEventTemplate.send("task-events", event);
         });
 

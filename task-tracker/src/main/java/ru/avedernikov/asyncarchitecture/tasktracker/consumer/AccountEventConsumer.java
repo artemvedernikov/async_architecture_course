@@ -3,7 +3,7 @@ package ru.avedernikov.asyncarchitecture.tasktracker.consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEventV1;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.AccountRole;
 import ru.avedernikov.asyncarchitecture.tasktracker.repository.AccountRepository;
 
@@ -18,7 +18,7 @@ public class AccountEventConsumer {
     @KafkaListener(
             topics = "account-event",
             containerFactory = "kafkaListenerContainerFactory")
-    public void greetingListener(AccountEvent accountEvent) {
+    public void greetingListener(AccountEventV1 accountEvent) {
         System.out.println("Got event");
         if (accountEvent.getType().equals("CLIENT_REGISTER") || accountEvent.getType().equals("CLIENT_UPDATE")) {
             UUID id = UUID.fromString(accountEvent.getUserId());

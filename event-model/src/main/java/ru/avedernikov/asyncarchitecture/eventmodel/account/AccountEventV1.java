@@ -2,7 +2,7 @@ package ru.avedernikov.asyncarchitecture.eventmodel.account;
 
 import java.util.Map;
 
-public class AccountEvent {
+public class AccountEventV1 {
 
     private String userId;
     private String type;

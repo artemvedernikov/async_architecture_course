@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS accounts(
 
 CREATE TABLE IF NOT EXISTS tasks(
     id UUID NOT NULL,
-    name VARCHAR NOT NULL,
+    title VARCHAR NOT NULL,
     assignee_id UUID NOT NULL,
     done BOOLEAN NOT NULL,
     PRIMARY KEY (id),
