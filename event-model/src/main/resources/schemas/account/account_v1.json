@@ -1,22 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Product",
-  "description": "A product from the catalog",
+  "title": "Account V1",
   "type": "object",
   "properties": {
-    "id": {
-      "description": "The unique identifier for a product",
-      "type": "integer"
-    },
-    "name": {
-      "description": "Name of the product",
+    "public_id": {
       "type": "string"
     },
-    "price": {
-      "type": "number",
-      "minimum": 0,
-      "exclusiveMinimum": true
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean"
     }
   },
-  "required": ["id", "name", "price"]
+  "required": ["public_id", "name", "email", "role", "active"]
 }

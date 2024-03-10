@@ -14,6 +14,8 @@ public class Account {
 
     private UUID publicId;
 
+    private String name;
+
     private String email;
 
     @Enumerated(EnumType.STRING)

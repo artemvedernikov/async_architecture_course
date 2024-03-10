@@ -14,6 +14,8 @@ public class Task {
 
     private String title;
 
+    private String jiraId;
+
     private boolean done;
 
     @ManyToOne
