@@ -2,6 +2,8 @@ package ru.avedernikov.asyncarchitecture.accountingbilling.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -21,6 +23,6 @@ public class Transaction {
 
     private Double amount;
 
-
+    private Date date;
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.AccountBillingStateDTO;
-import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.DailyStatsDTO;
+import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.CompanyDailyStatsDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.model.Transaction;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountBillingRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
@@ -39,7 +39,7 @@ public class BillingController {
 
     // todo: validate for managers/admins oauth
     @GetMapping("/daily")
-    ResponseEntity<DailyStatsDTO> getDailyStats() {
+    ResponseEntity<CompanyDaixlyStatsDTO> getDailyStats() {
 
     }
 

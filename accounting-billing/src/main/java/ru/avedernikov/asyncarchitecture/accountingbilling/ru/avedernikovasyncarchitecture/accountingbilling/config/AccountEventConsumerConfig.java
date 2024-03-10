@@ -3,5 +3,5 @@ package ru.avedernikov.asyncarchitecture.accountingbilling.ru.avedernikovasyncar
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AccountEventV1ConsumerConfig {
+public class AccountEventConsumerConfig {
 }
