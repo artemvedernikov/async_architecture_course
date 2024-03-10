@@ -1,0 +1,101 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8 # exists for arm mac
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ALLOW_ANONYMOUS_LOGIN: yes
+      ZOO_ADMIN_SERVER_PORT_NUMBER: 9999
+
+  broker:
+    image: docker.io/bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - "./volumes/kafka-broker:/bitnami"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    restart: on-failure
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8082:8080
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_BROKERCONNECT=broker:9092
+      - DYNAMIC_CONFIG_ENABLED=true
+    depends_on:
+      - broker
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/init.sql
+
+  auth:
+    build: ./keycloak
+    image: keycloak-kafka:latest
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KAFKA_TOPIC: account-events
+      KAFKA_CLIENT_ID: keycloak
+      KAFKA_BOOTSTRAP_SERVERS: localhost:5432
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./keycloak/realm.json:/opt/keycloak/data/import/realm.json
+    depends_on:
+      - db
+      - broker
+    restart: always
+
+  task-tracker:
+    platform: linux/x86_64 # mac m2 workaround
+    build: ./task-tracker
+    image: task-tracker:latest
+    restart: always
+    depends_on:
+      - db
+      - broker
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=broker:9092
+    # https://www.baeldung.com/spring-boot-keycloak#keycloak-config
+      - spring.security.oauth2.client.registration.keycloak.client-id=task-tracker
+      - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+      - spring.security.oauth2.client.registration.keycloak.scope=openid
+      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://auth:8080/realms/async_architecture
+      - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://auth:8080/realms/async_architecture
+    ports:
+      - "8090:8090"
+
+volumes:
+  db:
+    driver: local
