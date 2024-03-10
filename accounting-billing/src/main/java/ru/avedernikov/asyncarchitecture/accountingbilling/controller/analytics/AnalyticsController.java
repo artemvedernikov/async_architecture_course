@@ -8,7 +8,7 @@ import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.MostExpe
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.MostExpensiveTaskInterval;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.NegativeBalanceDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountBillingRepository;
-import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskBillingRepository;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
 
 import java.time.LocalDate;
 
@@ -20,7 +20,7 @@ public class AnalyticsController {
     private AccountBillingRepository accountBillingRepository;
 
     @Autowired
-    private TaskBillingRepository taskBillingRepository;
+    private TaskRepository taskBillingRepository;
 
     @GetMapping("/daily_earnings")
     public ResponseEntity<DailyEarningsDTO> dailyEarnings() {

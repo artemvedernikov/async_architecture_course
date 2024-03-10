@@ -2,7 +2,7 @@ package ru.avedernikov.asyncarchitecture.eventmodel.task;
 
 import java.util.UUID;
 
-public class TaskEventV1 {
+public class TaskV1Event {
 
     public enum TaskEventType {
         TASK_CREATED,
@@ -15,7 +15,7 @@ public class TaskEventV1 {
 
     private final String title;
 
-    public TaskEventV1(TaskEventType eventType, UUID taskId, String title) {
+    public TaskV1Event(TaskEventType eventType, UUID taskId, String title) {
         this.eventType = eventType;
         this.taskId = taskId;
         this.title = title;

@@ -12,7 +12,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEventV1;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskV1Event;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class TaskEventProducerConfig {
 
 
     @Bean
-    public ProducerFactory<UUID, TaskEventV1> producerFactory() {
+    public ProducerFactory<UUID, TaskV1Event> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -56,7 +56,7 @@ public class TaskEventProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<UUID, TaskEventV1> kafkaTemplate() {
+    public KafkaTemplate<UUID, TaskV1Event> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

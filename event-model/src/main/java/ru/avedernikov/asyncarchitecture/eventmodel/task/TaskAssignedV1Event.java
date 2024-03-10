@@ -1,4 +1,4 @@
 package ru.avedernikov.asyncarchitecture.eventmodel.task;
 
-public class TaskEventV2 {
+public class TaskAssignedV1Event {
 }

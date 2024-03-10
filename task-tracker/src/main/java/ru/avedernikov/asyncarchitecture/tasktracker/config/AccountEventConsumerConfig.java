@@ -10,7 +10,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountEventV1;
+import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountV1Event;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class AccountEventConsumerConfig {
 
 
     @Bean
-    public ConsumerFactory<UUID, AccountEventV1> consumerFactory() {
+    public ConsumerFactory<UUID, AccountV1Event> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -46,10 +46,10 @@ public class AccountEventConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<UUID, AccountEventV1>
+    public ConcurrentKafkaListenerContainerFactory<UUID, AccountV1Event>
     kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<UUID, AccountEventV1> factory =
+        ConcurrentKafkaListenerContainerFactory<UUID, AccountV1Event> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

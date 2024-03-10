@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "accounts_billing")
-public class AccountBilling {
+public class Account {
 
     private UUID publicId;
 
