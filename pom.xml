@@ -19,6 +19,7 @@
     <modules>
         <module>event-model</module>
         <module>task-tracker</module>
+        <module>accounting-billing</module>
     </modules>
 
     <properties>
