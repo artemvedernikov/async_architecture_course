@@ -7,7 +7,7 @@ import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.DailyEar
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.MostExpensiveTaskDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.MostExpensiveTaskInterval;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.analytics.NegativeBalanceDTO;
-import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountBillingRepository;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class AnalyticsController {
 
     @Autowired
-    private AccountBillingRepository accountBillingRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     private TaskRepository taskBillingRepository;

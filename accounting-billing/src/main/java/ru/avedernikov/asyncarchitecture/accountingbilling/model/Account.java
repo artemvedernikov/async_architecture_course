@@ -9,6 +9,7 @@ import java.util.UUID;
 @Table(name = "accounts_billing")
 public class Account {
 
+
     private UUID publicId;
 
 }

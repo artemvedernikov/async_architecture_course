@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.AccountBillingStateDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.CompanyDailyStatsDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.model.Transaction;
-import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountBillingRepository;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TransactionRepository;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class BillingController {
 
     @Autowired
-    private AccountBillingRepository accountBillingRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     private TaskRepository taskBillingRepository;
@@ -39,7 +39,7 @@ public class BillingController {
 
     // todo: validate for managers/admins oauth
     @GetMapping("/daily")
-    ResponseEntity<CompanyDaixlyStatsDTO> getDailyStats() {
+    ResponseEntity<CompanyDailyStatsDTO> getDailyStats() {
 
     }
 

@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @Configuration
-public class TaskEventProducerConfig {
+public class TaskStreamingEventProducerConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Value(value = "${spring.kafka.task-events-topic-name}")
-    private String taskEventsTopicName;
+    private String taskStreamingEventsTopicName;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -36,7 +36,7 @@ public class TaskEventProducerConfig {
 
     @Bean
     public NewTopic accountEventTopic() {
-        return new NewTopic(taskEventsTopicName, 1, (short) 1);
+        return new NewTopic(taskStreamingEventsTopicName, 1, (short) 1);
     }
 
 

@@ -7,7 +7,7 @@ import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskReposit
 import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountV1Event;
 
 @Component
-public class TaskEventConsumer {
+public class TaskStreamingEventConsumer {
     @Autowired
     private TaskRepository taskRepository;
 
