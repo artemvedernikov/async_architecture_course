@@ -60,7 +60,7 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KAFKA_TOPIC: account-events
+      KAFKA_TOPIC: account-streaming
       KAFKA_CLIENT_ID: keycloak
       KAFKA_BOOTSTRAP_SERVERS: localhost:5432
     command:

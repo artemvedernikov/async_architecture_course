@@ -12,7 +12,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    private String name;
+    private String title;
+
+    private String jiraId;
 
     private boolean done;
 
@@ -20,8 +22,8 @@ public class Task {
     @JoinColumn(name="assignee_id")
     private Account assignee;
 
-    public Task(String name, boolean done, Account assignee) {
-        this.name = name;
+    public Task(String title, boolean done, Account assignee) {
+        this.title = title;
         this.done = done;
         this.assignee = assignee;
     }
@@ -30,8 +32,8 @@ public class Task {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public boolean getDone() {

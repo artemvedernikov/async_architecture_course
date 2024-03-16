@@ -10,7 +10,11 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
+
+    private UUID publicId;
+
+    private String name;
 
     private String email;
 
@@ -19,8 +23,12 @@ public class Account {
 
     private boolean active;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
     }
 
     public String getEmail() {

@@ -12,20 +12,20 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskEvent;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskV1Event;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Configuration
-public class TaskEventProducerConfig {
+public class TaskStreamingEventProducerConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Value(value = "${spring.kafka.task-events-topic-name}")
-    private String taskEventsTopicName;
+    private String taskStreamingEventsTopicName;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -36,12 +36,12 @@ public class TaskEventProducerConfig {
 
     @Bean
     public NewTopic accountEventTopic() {
-        return new NewTopic(taskEventsTopicName, 1, (short) 1);
+        return new NewTopic(taskStreamingEventsTopicName, 1, (short) 1);
     }
 
 
     @Bean
-    public ProducerFactory<UUID, TaskEvent> producerFactory() {
+    public ProducerFactory<UUID, TaskV1Event> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -56,7 +56,7 @@ public class TaskEventProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<UUID, TaskEvent> kafkaTemplate() {
+    public KafkaTemplate<UUID, TaskV1Event> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
