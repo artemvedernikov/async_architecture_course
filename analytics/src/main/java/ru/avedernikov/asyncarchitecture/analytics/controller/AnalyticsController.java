@@ -11,11 +11,13 @@ import ru.avedernikov.asyncarchitecture.analytics.dto.DailyEarningsDTO;
 import ru.avedernikov.asyncarchitecture.analytics.dto.MostExpensiveTaskDTO;
 import ru.avedernikov.asyncarchitecture.analytics.dto.MostExpensiveTaskInterval;
 import ru.avedernikov.asyncarchitecture.analytics.dto.NegativeBalanceDTO;
+import ru.avedernikov.asyncarchitecture.analytics.model.Task;
 import ru.avedernikov.asyncarchitecture.analytics.repository.AccountRepository;
 import ru.avedernikov.asyncarchitecture.analytics.repository.BusinessBalanceTransactionRepository;
 import ru.avedernikov.asyncarchitecture.analytics.repository.TaskRepository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/analytics")
@@ -30,6 +32,7 @@ public class AnalyticsController {
     @Autowired
     private BusinessBalanceTransactionRepository businessBalanceTransactionRepository;
 
+    // todo: add role check
     @GetMapping("/daily_earnings")
     public ResponseEntity<DailyEarningsDTO> dailyEarnings() {
         LocalDate today = LocalDate.now();
@@ -38,6 +41,7 @@ public class AnalyticsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    // todo: add role check
     @GetMapping("/negative_balance_workers")
     public ResponseEntity<NegativeBalanceDTO> negativeBalanceWorkers() {
 
@@ -45,10 +49,28 @@ public class AnalyticsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    // todo: add role check
     @GetMapping("/most_expensive_task/{interval}")
     public ResponseEntity<MostExpensiveTaskDTO> mostExpensiveTask(@PathVariable("interval") MostExpensiveTaskInterval interval) {
-        MostExpensiveTaskDTO dto = new MostExpensiveTaskDTO();
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        LocalDate today = LocalDate.now();
+        LocalDate start = switch (interval) {
+            case DAY -> today.minusDays(1);
+            case WEEK ->  today.minusDays(8);
+            case MONTH -> today.minusDays(31);
+        };
+        Optional<Task> mostExpensiveTaskOpt = taskBillingRepository.findMostExpensiveTaskInInterval(start, today);
+        if (mostExpensiveTaskOpt.isPresent()) {
+            Task mostExpensiveTask = mostExpensiveTaskOpt.get();
+            MostExpensiveTaskDTO dto = new MostExpensiveTaskDTO(
+                 mostExpensiveTask.getPublicId(),
+                 mostExpensiveTask.getCost(),
+                 today,
+                interval
+            );
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.avedernikov.asyncarchitecture.accountingbilling.ru.avedernikovasyncarchitecture.accountingbilling.config;
+package ru.avedernikov.asyncarchitecture.accountingbilling.config;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -46,7 +46,8 @@ public class TaskCreatedV1EventConsumer {
     @KafkaListener(topics = "${spring.kafka.task-created-v1-topic-name}")
     public void taskCreatedV1Listener(TaskCreatedV1Event taskCreatedV1Event) {
         Optional<Account> assigneeOpt = accountRepository.findOneByPublicId(taskCreatedV1Event.getAssigneePublicId());
-        Optional<Task> taskOpt = taskRepository.findOneByPublicId(taskCreatedV1Event.getTaskPublicId());
+        String taskPublicId = taskCreatedV1Event.getTaskPublicId();
+        Optional<Task> taskOpt = taskRepository.findOneByPublicId(taskPublicId);
         if (assigneeOpt.isPresent()) {
             Account assignee = assigneeOpt.get();
             Task task;
@@ -54,8 +55,13 @@ public class TaskCreatedV1EventConsumer {
                 task = taskOpt.get();
             } else {
                 double cost = TaskPriceGenerator.generateTaskCost();
-                double reward = TaskPriceGenerator.generateTaskReward()l
-                task = new Task(cost, reward, assignee);
+                double reward = TaskPriceGenerator.generateTaskReward();
+                task = new Task(taskPublicId, cost, reward, assignee);
+                TaskCostAssignedV1Event taskCostAssignedV1Event = new TaskCostAssignedV1Event(
+                        new TaskCostAssignedV1Event.TaskCostAssignedV1EventMeta(),
+                        new TaskCostAssignedV1Event.TaskCostAssignedV1EventData(taskPublicId, cost, reward)
+                );
+                taskCostAssignedV1Producer.send(taskCostAssignedV1TopicName, taskCostAssignedV1Event);
             }
             double cost = task.getCost();
 

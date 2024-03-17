@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "accounts_tasks")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private UUID publicId;
+    private String publicId;
 
     private String name;
 
@@ -27,7 +27,7 @@ public class Account {
         return id;
     }
 
-    public UUID getPublicId() {
+    public String getPublicId() {
         return publicId;
     }
 

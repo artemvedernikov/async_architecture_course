@@ -25,4 +25,11 @@ public class Transaction {
 
     private Date date;
 
+    public Double getAmount() {
+        return amount;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }

@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class MostExpensiveTaskDTO {
-    private UUID taskPublicId;
-    private Double taskPrice;
-    private LocalDate requestDate;
-    private MostExpensiveTaskInterval interval;
+    private final String taskPublicId;
+    private final Double cost;
+    private final LocalDate requestDate;
+    private final MostExpensiveTaskInterval interval;
 
-    public MostExpensiveTaskDTO(UUID taskPublicId, Double taskPrice, LocalDate requestDate, MostExpensiveTaskInterval interval) {
+    public MostExpensiveTaskDTO(String taskPublicId, Double cost, LocalDate requestDate, MostExpensiveTaskInterval interval) {
         this.taskPublicId = taskPublicId;
-        this.taskPrice = taskPrice;
+        this.cost = cost;
         this.requestDate = requestDate;
         this.interval = interval;
     }

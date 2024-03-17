@@ -11,16 +11,21 @@ public class AccountBillingStateDTO {
 
     private Double amount;
 
-    private UUID accountPublicId;
+    private String accountPublicId;
 
     private List<TransactionDTO> transactions;
 
     public static class TransactionDTO {
         private Date date;
         private Double amount;
+
+        public TransactionDTO(Date date, Double amount) {
+            this.date = date;
+            this.amount = amount;
+        }
     }
 
-    public AccountBillingStateDTO(LocalDate date, Double amount, UUID accountPublicId, List<TransactionDTO> transactions) {
+    public AccountBillingStateDTO(LocalDate date, Double amount, String accountPublicId, List<TransactionDTO> transactions) {
         this.date = date;
         this.amount = amount;
         this.accountPublicId = accountPublicId;

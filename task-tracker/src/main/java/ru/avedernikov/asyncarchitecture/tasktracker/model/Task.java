@@ -13,7 +13,7 @@ public class Task {
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID publicId;
+    private String publicId;
 
     private String title;
 
@@ -35,7 +35,7 @@ public class Task {
         return id;
     }
 
-    public UUID getPublicId() {
+    public String getPublicId() {
         return publicId;
     }
 

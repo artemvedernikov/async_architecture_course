@@ -8,9 +8,11 @@ import jakarta.persistence.Table;
 public class Task {
 
 
-    private final String publicId;
+    private String publicId;
 
     private Double cost;
+
+    private Double reward;
 
     public String getPublicId() {
         return publicId;
@@ -18,5 +20,17 @@ public class Task {
 
     public Double getCost() {
         return cost;
+    }
+
+    public Double getReward() {
+        return reward;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public void setReward(Double reward) {
+        this.reward = reward;
     }
 }

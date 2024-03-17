@@ -7,6 +7,6 @@ import jakarta.persistence.Table;
 @Table(name = "accounts_analytics")
 public class Account {
 
-    private final String publicId;
+    private String publicId;
 
 }
