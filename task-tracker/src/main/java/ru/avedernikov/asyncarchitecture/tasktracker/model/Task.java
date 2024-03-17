@@ -9,8 +9,11 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID publicId;
 
     private String title;
 
@@ -28,8 +31,12 @@ public class Task {
         this.assignee = assignee;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
     }
 
     public String getTitle() {
@@ -38,6 +45,10 @@ public class Task {
 
     public boolean getDone() {
         return done;
+    }
+
+    public Account getAssignee() {
+        return assignee;
     }
 
     public void setDone(boolean done) {

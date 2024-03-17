@@ -10,6 +10,6 @@ import java.util.UUID;
 public class Account {
 
 
-    private UUID publicId;
+    private String publicId;
 
 }

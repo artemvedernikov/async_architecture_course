@@ -1,10 +1,11 @@
 package ru.avedernikov.asyncarchitecture.eventmodel.task;
 
-public class TaskAssignedV1Event {
+public class TaskCreatedV1Event {
+
     private final String taskPublicId;
     private final String assigneePublicId;
 
-    public TaskAssignedV1Event(String taskPublicId, String assigneePublicId) {
+    public TaskCreatedV1Event(String taskPublicId, String assigneePublicId) {
         this.taskPublicId = taskPublicId;
         this.assigneePublicId = assigneePublicId;
     }

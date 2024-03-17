@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> getByAssigneeId(UUID assigneeId);
+    List<Transaction> getByAssigneeId(String assigneeId);
 
 }

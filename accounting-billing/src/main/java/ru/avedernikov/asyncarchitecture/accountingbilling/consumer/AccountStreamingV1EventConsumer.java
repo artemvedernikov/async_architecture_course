@@ -3,19 +3,21 @@ package ru.avedernikov.asyncarchitecture.accountingbilling.consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountRepository;
 import ru.avedernikov.asyncarchitecture.eventmodel.account.AccountV1Event;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskV2Event;
 
+// CUD
 @Component
-public class TaskStreamingEventConsumer {
+public class AccountStreamingV1EventConsumer {
     @Autowired
-    private TaskRepository taskRepository;
+    private AccountRepository accountRepository;
 
     @KafkaListener(
-            topics = "task-streaming",
+            topics = "account-streaming-v1",
             containerFactory = "kafkaListenerContainerFactory")
-    public void taskEventListener(AccountV1Event accountEvent) {
-
+    public void accountV1EventListener(AccountV1Event accountV1Event) {
+        // update account
+        // save to db
     }
-
 }

@@ -11,13 +11,13 @@ public class TaskV1Event {
 
     private final TaskEventType eventType;
 
-    private final UUID taskId;
+    private final String taskPublicId;
 
     private final String title;
 
-    public TaskV1Event(TaskEventType eventType, UUID taskId, String title) {
+    public TaskV1Event(TaskEventType eventType, String taskPublicId, String title) {
         this.eventType = eventType;
-        this.taskId = taskId;
+        this.taskPublicId = taskPublicId;
         this.title = title;
     }
 
@@ -25,8 +25,8 @@ public class TaskV1Event {
         return eventType;
     }
 
-    public UUID getTaskId() {
-        return taskId;
+    public String getTaskPublicId() {
+        return taskPublicId;
     }
 
     public String getTitle() {

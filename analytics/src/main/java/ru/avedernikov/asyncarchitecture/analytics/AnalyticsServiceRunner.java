@@ -1,12 +1,12 @@
-package ru.avedernikov.asyncarchitecture.accountingbilling;
+package ru.avedernikov.asyncarchitecture.analytics;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AccountingBillingServiceRunner {
+public class AnalyticsServiceRunner {
     public static void main(String[] args) {
-        SpringApplication.run(AccountingBillingServiceRunner.class, args);
+        SpringApplication.run(AnalyticsServiceRunner.class, args);
     }
 
 }

@@ -1,12 +1,12 @@
-package ru.avedernikov.asyncarchitecture.accountingbilling.controller.billing;
+package ru.avedernikov.asyncarchitecture.accountingbilling.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.AccountBillingStateDTO;
-import ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing.CompanyDailyStatsDTO;
+import ru.avedernikov.asyncarchitecture.accountingbilling.dto.AccountBillingStateDTO;
+import ru.avedernikov.asyncarchitecture.accountingbilling.dto.CompanyDailyStatsDTO;
 import ru.avedernikov.asyncarchitecture.accountingbilling.model.Transaction;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
@@ -25,14 +25,13 @@ public class BillingController {
     @Autowired
     private TaskRepository taskBillingRepository;
 
-
     @Autowired
     private TransactionRepository transactionRepository;
 
     // todo: pass user_id through oauth
     @GetMapping("/")
-    ResponseEntity<AccountBillingStateDTO> getBillingState(UUID userId) {
-        List<Transaction> userTransactions = transactionRepository.getByAssigneeId(userId);
+    ResponseEntity<AccountBillingStateDTO> getBillingState(String userPublicId) {
+        List<Transaction> userTransactions = transactionRepository.getByAssigneeId(userPublicId);
 
 
     }

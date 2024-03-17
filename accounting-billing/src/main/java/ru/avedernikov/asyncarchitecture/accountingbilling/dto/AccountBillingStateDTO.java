@@ -1,4 +1,4 @@
-package ru.avedernikov.asyncarchitecture.accountingbilling.dto.billing;
+package ru.avedernikov.asyncarchitecture.accountingbilling.dto;
 
 import java.time.LocalDate;
 import java.util.Date;
