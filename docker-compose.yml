@@ -60,7 +60,7 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KAFKA_TOPIC: account-streaming
+      KAFKA_TOPIC: account-streaming-v1
       KAFKA_CLIENT_ID: keycloak
       KAFKA_BOOTSTRAP_SERVERS: localhost:5432
     command:
@@ -118,6 +118,29 @@ services:
       - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://auth:8080/realms/async_architecture
     ports:
       - "8100:8100"
+
+  analytics:
+    platform: linux/x86_64 # mac m2 workaround
+    build: ./analytics
+    image: task-tracker:latest
+    restart: always
+    depends_on:
+      - db
+      - broker
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=broker:9092
+      # https://www.baeldung.com/spring-boot-keycloak#keycloak-config
+      - spring.security.oauth2.client.registration.keycloak.client-id=task-tracker
+      - spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+      - spring.security.oauth2.client.registration.keycloak.scope=openid
+      - spring.security.oauth2.client.provider.keycloak.issuer-uri=http://auth:8080/realms/async_architecture
+      - spring.security.oauth2.client.provider.keycloak.user-name-attribute=preferred_username
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://auth:8080/realms/async_architecture
+    ports:
+      - "8110:8110"
 
 volumes:
   db:

@@ -1,6 +1,6 @@
 FROM openjdk:17-alpine
 
-EXPOSE 8090
+EXPOSE 8100
 
 VOLUME /tmp
 COPY target/*.jar app.jar

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Task Cost Assigned V1",
+  "type": "object",
+  "properties": {
+    "public_id": {
+      "type": "string"
+    },
+    "cost": {
+      "type": "number"
+    }
+  },
+  "required": ["public_id", "cost"]
+}

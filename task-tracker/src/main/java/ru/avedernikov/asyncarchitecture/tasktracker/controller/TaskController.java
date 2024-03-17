@@ -1,11 +1,12 @@
 package ru.avedernikov.asyncarchitecture.tasktracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
-import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskV1Event;
+import ru.avedernikov.asyncarchitecture.eventmodel.task.*;
 import ru.avedernikov.asyncarchitecture.tasktracker.dto.TaskDTO;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.Account;
 import ru.avedernikov.asyncarchitecture.tasktracker.model.AccountRole;
@@ -32,7 +33,31 @@ public class TaskController {
     private AccountRepository accountRepository;
 
     @Autowired
-    private KafkaTemplate<UUID, TaskV1Event> taskEventTemplate;
+    private KafkaTemplate<String, TaskV1Event> taskV1EventProducer;
+    @Autowired
+    private KafkaTemplate<String, TaskV2Event> taskV2EventProducer;
+    @Autowired
+    private KafkaTemplate<String, TaskCreatedV1Event> taskCreatedV1EventProducer;
+    @Autowired
+    private KafkaTemplate<String, TaskAssignedV1Event> taskAssignedV1EventProducer;
+    @Autowired
+    private KafkaTemplate<String, TaskCompletedV1Event> taskCompletedV1EventProducer;
+
+    @Value(value = "${spring.kafka.task-streaming-v1-topic-name}")
+    private String taskStreamingV1TopicName;
+
+    @Value(value = "${spring.kafka.task-streaming-v2-topic-name}")
+    private String taskStreamingV2TopicName;
+
+    @Value(value = "${spring.kafka.task-created-v1-topic-name}")
+    private String taskCreatedV1TopicName;
+
+    @Value(value = "${spring.kafka.task-assigned-v1-topic-name}")
+    private String taskAssignedV1TopicName;
+
+    @Value(value = "${spring.kafka.task-completed-v1-topic-name}")
+    private String taskCompletedV1TopicName;
+
 
     private final Random randomGenerator = new Random();
 
@@ -47,8 +72,16 @@ public class TaskController {
                 worker.get()
             );
             taskRepository.save(task);
-            TaskV1Event event = TaskEventConverter.taskToTaskEvent(TaskV1Event.TaskEventType.TASK_CREATED, task);
-            taskEventTemplate.send("task-events", event);
+
+            TaskV1Event eventV1 = TaskEventConverter.taskToTaskEventV1(TaskV1Event.TaskEventType.TASK_UPDATED, task);
+            taskV1EventProducer.send(taskStreamingV1TopicName, eventV1);
+
+            TaskV2Event eventV2 = TaskEventConverter.taskToTaskEventV2(TaskV1Event.TaskEventType.TASK_UPDATED, task);
+            taskV2EventProducer.send(taskStreamingV2TopicName, eventV2);
+
+            TaskCreatedV1Event createdV1Event = new TaskCreatedV1Event(task.getPublicId().toString(), task.getAssignee().getPublicId().toString());
+            taskCreatedV1EventProducer.send(taskCreatedV1TopicName, createdV1Event);
+
             return new ResponseEntity<>(task, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,8 +94,12 @@ public class TaskController {
         Optional<Task> taskData = taskRepository.findById(id);
         if (taskData.isPresent()) {
             Task task = null;
-            TaskV1Event event = TaskEventConverter.taskToTaskEvent(TaskV1Event.TaskEventType.TASK_UPDATED, task);
-            taskEventTemplate.send("task-events", event);
+            TaskV1Event eventV1 = TaskEventConverter.taskToTaskEventV1(TaskV1Event.TaskEventType.TASK_UPDATED, task);
+            taskV1EventProducer.send(taskStreamingV1TopicName, eventV1);
+
+            TaskV2Event eventV2 = TaskEventConverter.taskToTaskEventV2(TaskV1Event.TaskEventType.TASK_UPDATED, task);
+            taskV2EventProducer.send(taskStreamingV2TopicName, eventV2);
+
             return new ResponseEntity<>(task, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,8 +137,8 @@ public class TaskController {
 
         taskRepository.saveAllAndFlush(updatedTasks);
         updatedTasks.forEach(t -> {
-            TaskV1Event event = TaskEventConverter.taskToTaskEvent(TaskV1Event.TaskEventType.TASK_UPDATED, t);
-            taskEventTemplate.send("task-events", event);
+            TaskAssignedV1Event assignedV1Event = new TaskAssignedV1Event(t.getPublicId().toString(), t.getAssignee().getPublicId().toString());
+            taskAssignedV1EventProducer.send(taskAssignedV1TopicName, assignedV1Event);
         });
 
         return ResponseEntity.ok().build();
@@ -115,7 +152,8 @@ public class TaskController {
             task.setDone(true);
             taskRepository.save(task);
 
-
+            TaskCompletedV1Event event = new TaskCompletedV1Event(task.getPublicId().toString());
+            taskCompletedV1EventProducer.send(taskCompletedV1TopicName, event);
 
             return ResponseEntity.ok().build();
         } else {

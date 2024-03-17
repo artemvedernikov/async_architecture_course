@@ -1,21 +1,40 @@
 package ru.avedernikov.asyncarchitecture.accountingbilling.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "tasks_billing")
 public class Task {
-    private UUID publicId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-    private Double price;
+    private String publicId;
+
+    private double cost;
+
+    private double reward;
 
     @ManyToOne
     @JoinColumn(name="assignee_id")
     private Account assignee;
 
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getReward() {
+        return reward;
+    }
+
+    public Account getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Account assignee) {
+        this.assignee = assignee;
+    }
 }

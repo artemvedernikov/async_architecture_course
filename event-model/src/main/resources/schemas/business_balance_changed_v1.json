@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Business Balance Changed V1",
+  "type": "object",
+  "properties": {
+    "diff": {
+      "type": "number"
+    }
+  },
+  "required": ["diff"]
+}

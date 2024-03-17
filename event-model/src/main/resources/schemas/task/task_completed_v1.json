@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Task Completed V1",
+  "type": "object",
+  "properties": {
+    "public_id": {
+      "type": "string"
+    }
+  },
+  "required": ["public_id"]
+}

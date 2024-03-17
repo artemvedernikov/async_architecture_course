@@ -9,7 +9,7 @@ import java.util.Date;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne
@@ -25,4 +25,11 @@ public class Transaction {
 
     private Date date;
 
+    public Double getAmount() {
+        return amount;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }
