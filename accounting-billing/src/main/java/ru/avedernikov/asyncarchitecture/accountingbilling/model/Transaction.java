@@ -20,8 +20,13 @@ public class Transaction {
     @JoinColumn(name="task_id")
     private Task task;
 
+    @ManyToOne
+    @JoinColumn(name="billing_cycle_id")
+    private BillingCycle billingCycle;
 
     private Double amount;
+
+    private TransactionType transactionType;
 
     private Date date;
 
@@ -31,5 +36,9 @@ public class Transaction {
 
     public Date getDate() {
         return date;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 }

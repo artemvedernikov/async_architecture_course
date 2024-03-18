@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import ru.avedernikov.asyncarchitecture.accountingbilling.model.Account;
-import ru.avedernikov.asyncarchitecture.accountingbilling.model.Task;
-import ru.avedernikov.asyncarchitecture.accountingbilling.model.Transaction;
+import ru.avedernikov.asyncarchitecture.accountingbilling.model.*;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.AccountRepository;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.BillingCycleRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TransactionRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.utils.TaskPriceGenerator;
@@ -16,6 +15,7 @@ import ru.avedernikov.asyncarchitecture.eventmodel.BusinessBalanceChangedV1Event
 import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskCostAssignedV1Event;
 import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskCreatedV1Event;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,6 +30,9 @@ public class TaskCreatedV1EventConsumer {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private BillingCycleRepository billingCycleRepository;
 
     @Autowired
     private KafkaTemplate<String, TaskCostAssignedV1Event> taskCostAssignedV1Producer;
@@ -68,7 +71,8 @@ public class TaskCreatedV1EventConsumer {
             task.setAssignee(assignee);
             taskRepository.save(task);
 
-            Transaction transaction = new Transaction(task, assignee, -cost, new Date());
+            BillingCycle currentUserBillingCycle = billingCycleRepository.getOrCreateOpenBillingCycle(task.getAssignee(), LocalDate.now());
+            Transaction transaction = new Transaction(task, assignee, currentUserBillingCycle, -cost, TransactionType.ENROLLMENT, new Date());
             transactionRepository.save(transaction);
 
             BusinessBalanceChangedV1Event businessBalanceChangedV1Event = new BusinessBalanceChangedV1Event(cost);

@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import ru.avedernikov.asyncarchitecture.accountingbilling.model.BillingCycle;
 import ru.avedernikov.asyncarchitecture.accountingbilling.model.Task;
 import ru.avedernikov.asyncarchitecture.accountingbilling.model.Transaction;
+import ru.avedernikov.asyncarchitecture.accountingbilling.model.TransactionType;
+import ru.avedernikov.asyncarchitecture.accountingbilling.repository.BillingCycleRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TaskRepository;
 import ru.avedernikov.asyncarchitecture.accountingbilling.repository.TransactionRepository;
 import ru.avedernikov.asyncarchitecture.eventmodel.BusinessBalanceChangedV1Event;
 import ru.avedernikov.asyncarchitecture.eventmodel.task.TaskCompletedV1Event;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -23,6 +27,9 @@ public class TaskCompletedV1EventConsumer {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private BillingCycleRepository billingCycleRepository;
 
     @Autowired
     private KafkaTemplate<String, BusinessBalanceChangedV1Event> businessBalanceChangedV1EventProducer;
@@ -37,7 +44,8 @@ public class TaskCompletedV1EventConsumer {
             Task task = taskOpt.get();
             double reward = task.getReward();
 
-            Transaction transaction = new Transaction(task, task.getAssignee(), reward, new Date());
+            BillingCycle currentUserBillingCycle = billingCycleRepository.getOrCreateOpenBillingCycle(task.getAssignee(), LocalDate.now());
+            Transaction transaction = new Transaction(task, task.getAssignee(), currentUserBillingCycle, reward, TransactionType.WITHDRAWAL,  new Date());
             transactionRepository.save(transaction);
 
             BusinessBalanceChangedV1Event businessBalanceChangedV1Event = new BusinessBalanceChangedV1Event(-reward);
