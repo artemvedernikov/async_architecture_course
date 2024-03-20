@@ -9,7 +9,9 @@ import java.util.UUID;
 @Table(name = "accounts_billing")
 public class Account {
 
-
     private String publicId;
 
+    public String getPublicId() {
+        return publicId;
+    }
 }
